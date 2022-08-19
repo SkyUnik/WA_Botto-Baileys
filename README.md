@@ -11,14 +11,14 @@
 
 <p align="center">
   </a>
-  <a href="https://github.com/pedroslopez/whatsapp-web.js">
-    <img src="https://img.shields.io/github/v/release/pedroslopez/whatsapp-web.js?color=blue&display_name=tag&label=wweb-js&logo=Whatsapp">
+  <a href="https://github.com/adiwajshing/Baileys">
+    <img src="https://img.shields.io/github/v/release/adiwajshing/baileys?color=light&label=Baileys&logo=whatsapp">
   </a>
   <a href="https://www.whatsapp.com/">
     <img src="https://img.shields.io/badge/WhatsApp_Web-2.2224.8-brightgreen.svg?logo=Whatsapp">
   </a>
-  <a href="https://discord.gg/wyKybbF">
-    <img src="https://img.shields.io/discord/698610475432411196?color=light&label=Discord&logo=Discord&logoColor=purple%20dark">
+  <a href="https://discord.gg/HzAU2jMD">
+    <img src="https://img.shields.io/discord/725839806084546610?color=light&label=Discord&logo=Discord&logoColor=purple%20dark">
   </a>
   <a href="http://www.apache.org/licenses/LICENSE-2.0">
     <img src="https://img.shields.io/github/license/SkyUnik/WA_Botto?color=orange&label=License&logo=apache">
@@ -31,14 +31,14 @@
 ## Getting Started
 
 This project require NodeJS v12.
-Recommended NodeJS v14.
+Recommended NodeJS v16~.
 
 ### Install
 Clone this project
 
 ```bash
-> git clone https://github.com/lyfla/basic-baileys.git
-> cd basic-baileys
+> https://github.com/SkyUnik/WA_Botto-Baileys.git
+> cd WA_Botto-Baileys
 ```
 
 Install :
@@ -51,30 +51,42 @@ Install :
 Run the Whatsapp baileys
 
 ```bash
-> node main
+> npm start
 ```
 after running it you need to scan the qr / spesify the auth .json file
 
 ---
 
 ## Features
+| Sticker Creator |                Feature           |
+| :-----------: | :--------------------------------: |
+|       ✅       | Reply A Sticker ( sticker to image ) |
 
-Gaada ._.
-Ini cuman dasarnya doang
-Tinggal nambahin case2 an nya doang
+| Other  |                     Feature                     |
+| :------------: | :---------------------------------------------: |
+|       ✅        |   Get a random joke             |
+
+| Group  |                     Feature               |
+| :-----------: | :--------------------------------: |
+|       ✅        |   Get List Admins Group          |
+|       ✅        |   Get Group Invite Link          |
+|       ✅        |   Bot leave the group            |
+
+| Owner Bot  |                     Feature           |
+| :-----------: | :--------------------------------: |
+|       ✅        |   Tag All User in group          |
+|       ✅        |   Get Code in Group (Bot Needed to be admin                    |
+
 
 ## To-Do
-Gaada
+- Make !addnotes
+- Make !listadmins
+
 ---
 
-## Troubleshooting
-Make sure all the necessary dependencies are installed: https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md
 
-Fix Stuck on linux, install google chrome stable: 
-```bash
-> wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-> sudo apt install ./google-chrome-stable_current_amd64.deb
-```
+## Troubleshooting
+- In Proggress
 
 ## BASE SC By
 - [DwiRizqiH](https://github.com/DwiRizqiH)
