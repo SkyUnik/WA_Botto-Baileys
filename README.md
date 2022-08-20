@@ -37,7 +37,7 @@ Recommended NodeJS v16~.
 Clone this project
 
 ```bash
-> https://github.com/SkyUnik/WA_Botto-Baileys.git
+> git clone https://github.com/SkyUnik/WA_Botto-Baileys.git
 > cd WA_Botto-Baileys
 ```
 
