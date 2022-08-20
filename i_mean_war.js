@@ -18,11 +18,16 @@ const {
 
 const auth_file = './auth_info.json'
 const { state, saveState } = useSingleFileAuthState(`${auth_file}`)
-const { createSticker, StickerTypes } = require('wa-sticker-formatter')
+const { createSticker, StickerTypes, default: Sticker } = require('wa-sticker-formatter')
+const { exec } = require("child_process")
+const ffmpeg = require('ffmpeg');
+const str_replace = require('str_replace');
+const fs = require('fs');
+const writeFile = require('fs/promises');
 
 const start = async () => {
     // const { version } = await fetchLatestBaileysVersion()
-    let ws = makeWASocket({ printQRInTerminal: true, auth: state })
+    let ws = makeWASocket({ printQRInTerminal: true, auth: state, defaultQueryTimeoutMs: undefined })
 
 
     // start now
@@ -59,11 +64,15 @@ const start = async () => {
         const mine_number = '6289684314433@s.whatsapp.net'
         let message = chatUpdate.messages[0]
         let messageRaw = chatUpdate.messages[0]
+        // if (message.key && message.key.remoteJid == 'status@broadcast') return
+        if (!message) return
         if (message.key && message.key.remoteJid == 'status@broadcast') return
+        if (message.key.fromMe == true) return
 
 
 
         const reply = async (from, teks) => {
+            await ws.sendPresenceUpdate('composing', from)
             return await ws.sendMessage(from, { text: teks }, { quoted: message })
         }
 
@@ -78,28 +87,35 @@ const start = async () => {
                 await reply(cret.from, 'I only can delete my own messages')
             }
         }
+
+        const sendMessageWTypingReply = async(jid, msg) => {
+            await ws.presenceSubscribe(jid)
+    
+            await ws.sendPresenceUpdate('composing', jid)
+    
+            await ws.sendPresenceUpdate('paused', jid)
+
+            await reply(jid, msg)
+        }
         
         message = require('./Message_format.js')(ws, message)
         console.log(message);
-        const groupMetadata = await ws.groupMetadata(message.from)
+        console.log(message.body);
+        const groupMetadata = message.isGroupMsg ? await ws.groupMetadata(message.from) : ''
         const groupMembers = message.isGroupMsg ? groupMetadata.participants : ''
         const groupAdmins0 = message.isGroupMsg ? groupMembers.filter(admn => admn.admin != null) : ''
         const groupAdmins = message.isGroupMsg ? groupAdmins0.map(admn2 => admn2.id) : ''
         let isGroupAdmins = message.isGroupMsg ? groupAdmins.includes(message.sender) : false
         let isMeGroupAdmins = message.isGroupMsg ? groupAdmins.includes(mine_number) : false
-        if (message.fromMe == true) return
+        if (!message.body == null) return
         // if (!message.hasNewMessage) return
-        // if (message.key && message.key.remoteJid == 'status@broadcast') return
-        // if (!message.body) return
 
 
         if(message.body == '!reply') {
-            await ws.sendPresenceUpdate('composing', message.from) 
-            const gowithit = reply(message.from, 'Hi Im Replying')
-            // console.log('reply :', gowithit)
+            await reply(message.from, 'Hi , Im Replying')
         }
 
-        else if(message.body == '!delete') {
+        if(message.body == '!delete') {
 
             const deleteu = deleteMessage(message.from, message)
             // const delyes = reply(message.from, 'Im Deleting That.')
@@ -107,23 +123,27 @@ const start = async () => {
             // console.log('delete :', deleteu)
         }
 
-        else if(message.body == '!sticker') {
-            await ws.sendPresenceUpdate('composing', message.from) 
-            if (message.quotedMsg != null || message.isMedia != null) {
+        if(message.body == '!sticker') {
+            console.log('This is sticker !') 
+            if (message.quotedMsg != false && message.quotedMsg.isMedia != false || message.isMedia != false ) {
+                console.log('Detected an Image');
+                await ws.sendPresenceUpdate('composing', message.from)
                 const mediaData = message.quotedMsg ? await message.quotedMsg.getMedia() : message.messageContent ? await downloadMediaMessage(message, 'buffer', { }) : ''
-                const stickerOptions = {
-                    pack: 'Bot Made This', // pack name
-                    author: 'WA JS V2', // author name
-                    type: StickerTypes.FULL, // sticker type
-                    quality: 50, // quality of the output file
-                }
-                const generateSticker = await createSticker(mediaData, stickerOptions)
-                await ws.sendMessage(message.from, { sticker: generateSticker })
+                const stickerOptions = new Sticker(mediaData, {
+                    pack: 'Sticker Made By WhatsappBot Fatih V2', // pack name
+                    author: 'Whatsapp JS V2', // author name
+                    categories: ['🎉'],
+                    type: StickerTypes.CROPPED, // sticker type
+                    quality: 100, // quality of the output file
+                })
+                // const buffer = await stickerOptions.toBuffer()
+                await ws.sendMessage(message.from, await stickerOptions.toMessage() , {quoted: message})
             }
 
+            else { reply(message.from, 'There is not an image , please send with image or replied an image') }
         } 
 
-        else if(message.body == '!everyone') {
+        if(message.body == '!everyone') {
             await ws.sendPresenceUpdate('composing', message.from) 
             if(isGroupAdmins) {
                 const group_all = await ws.groupMetadata(message.from)
@@ -146,11 +166,30 @@ const start = async () => {
             }
             else if (!isGroupAdmins) {
                 await ws.sendPresenceUpdate('composing', message.from) 
-                await reply(message.from, 'This is admin only command , only admin can use this.')
+                const group_all = await ws.groupMetadata(message.from)
+                const participante = group_all.participants
+                console.log(group_all);
+
+                const splet = message.sender.split('@s.whatsapp.net')
+                let texte = `@${splet} Tagged you :\n`;
+                let mentionse = [];
+                let listo = [];
+
+                for(let participant of group_all.participants) {
+                    const contact = participant.id;
+
+                    listo.push(participant);
+                    mentionse.push(contact);
+                    const sume = contact.split('@s.whatsapp.net')
+                    const memey = sume[0]
+                    texte += `@${memey} `;
+                }
+                const sentMsg  = await ws.sendMessage(message.from, { text: texte, mentions: mentionse })
+                // await reply(message.from, 'This is admin only command , only admin can use this.')
             }
         }
 
-        else if(message.body == '!code') {
+        if(message.body == '!code') {
             await ws.sendPresenceUpdate('composing', message.from) 
             if(isMeGroupAdmins) {
                 const code = await ws.groupInviteCode(message.from)
@@ -161,7 +200,7 @@ const start = async () => {
                 await reply(message.from, 'Im not and admin , i cant do that , only admin can use this.')
             }
         }
-        else if(message.body == '!joke') {
+        if(message.body == '!joke') {
             await ws.sendPresenceUpdate('composing', message.from) 
             const axios = require('axios');
 
