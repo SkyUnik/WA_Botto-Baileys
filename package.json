@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/SkyUnik/WA_Botto-Baileys/issues"
   },
-  "homepage": "https://github.com/SkyUnik/WA_Botto-Baileys#readme"
+  "homepage": "https://github.com/SkyUnik/WA_Botto-Baileys#readme",
+  "dependencies": {
+    "@adiwajshing/baileys": "^4.4.0",
+    "wa-sticker-formatter": "^4.3.2"
+  }
 }
