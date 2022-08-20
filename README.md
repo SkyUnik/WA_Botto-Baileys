@@ -28,23 +28,26 @@
 
 </div>
 
-## Getting Started
+# Getting Started
 
 This project require NodeJS v12.
 Recommended NodeJS v16~.
 
-### Install
-Clone this project
-
+## Installation
+## For Windows
 ```bash
-> git clone https://github.com/SkyUnik/WA_Botto-Baileys.git
-> cd WA_Botto-Baileys
+git clone https://github.com/SkyUnik/WA_Botto-Baileys.git
+cd WA_Botto-Baileys
+npm install
 ```
-
-Install :
-
+## For Termux
 ```bash
-> npm install 
+termux-setup-storage
+apt update && apt upgrade
+pkg install nodejs git
+git clone https://github.com/SkyUnik/WA_Botto-Baileys.git
+cd WA_Botto-Baileys
+npm install
 ```
 
 ### Usage
