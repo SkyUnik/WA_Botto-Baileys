@@ -56,34 +56,37 @@ Run the Whatsapp baileys
 ```bash
 > npm start
 ```
-after running it you need to scan the qr / spesify the auth .json file
+after running it you need to scan the qr / spesify the auth folder.
 
 ---
 
 ## Features
-| Sticker Creator |                Feature           |
-| :-----------: | :--------------------------------: |
-|       ✅       | Reply A Sticker ( sticker to image ) |
 
-| Other  |                     Feature                     |
+| Common-Use  |                     Feature                     |
 | :------------: | :---------------------------------------------: |
-|       ✅        |   Get a random joke             |
+|       ✅       | Image To Sticker (prefix+sticker). Example: !sticker |
+|       ✅       | Delete Message that sended by the bot (prefix+delete). Example: !delete |
+
 
 | Group  |                     Feature               |
 | :-----------: | :--------------------------------: |
-|       ✅        |   Get List Admins Group          |
-|       ✅        |   Get Group Invite Link          |
+|       ✅        |   Tag All People in group        |
 |       ✅        |   Bot leave the group            |
+|       ✅        |   !Notes IS NOW AVAILABLE        |
+|       ✅        |   !addnotes to addnotes in group |
+|       ✅        |   !delenotes to deletenotes in group |
+|       ✅        |   !addnotes to addnotes in group |
+
 
 | Owner Bot  |                     Feature           |
 | :-----------: | :--------------------------------: |
-|       ✅        |   Tag All User in group          |
-|       ✅        |   Get Code in Group (Bot Needed to be admin                    |
+|       ✅        |   Get Message Object (prefix+sme). Example: !sme |
+|       ✅        |   Run JS code within the bot (prefix+run+argument). Example: !run console.log("ONLY FOR OWNERS") |
+
 
 
 ## To-Do
-- Make !addnotes
-- Make !listadmins
+Understanding store in baileys
 
 ---
 
